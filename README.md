@@ -49,5 +49,5 @@ End of the table should look like this after it has been pasted.
   
 ![image](https://user-images.githubusercontent.com/97316608/213922982-31ceb211-8dd4-404d-9be4-d91f277a3793.png)  
   
-Save the file.  
+Save the file and done!  
 
