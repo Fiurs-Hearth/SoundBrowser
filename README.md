@@ -1,7 +1,18 @@
 # SoundBrowser
 A WotLK sound browsing addon  
   
-# Installation  
+# Installation
+  
+If you have custom sounds, please follow the step below: [Preparing sound data](https://github.com/Fiurs-Hearth/SoundBrowser/edit/master/README.md#preparing-sound-data)  
+  
+  
+## Installing the addon  
+* [Download the addon](https://github.com/Fiurs-Hearth/WIIIUI/archive/refs/heads/master.zip)
+* Unpack the file
+* Open the unpacked file and rename the folder named `WIIIUI-master` to `WIIIUI`
+* Put the renamed folder into the AddOns folder: `World of Warcraft\Interface\AddOns`
+* Start or restart WoW if already running 
+* Recommended: [Set script memory to 0](https://imgur.com/a/V65UiKd), this helps against most game crashes caused by addons, click link for instructions.
   
 ## Preparing sound data  
   
