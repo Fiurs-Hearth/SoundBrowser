@@ -6,6 +6,8 @@ A WotLK sound browsing addon
   
 # Features  
   
+[Click here for the video!](https://youtu.be/kgznzJsemUA)  
+  
 Two filter options + an extra that works with the two filter options.  
 * Standard filter, search by ID, name, path, filename.  
 * Search by ID with same length as the input text, matching numbers and filling in blanks (x or .).
