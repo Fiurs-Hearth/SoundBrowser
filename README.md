@@ -18,6 +18,18 @@ Other features
 * Bookmark your favourite sounds.
 * Play up individual sounds tied to the same ID  
   
+# How to use  
+  
+![image](https://user-images.githubusercontent.com/97316608/213938898-97ba1a6d-5d42-45d6-8381-04653becbd24.png)  
+
+* Left click the ear icon to open/close the window.  
+* Right click and hold to move the ear icon.  
+  
+* The frame is moveable by holding left click on the title text "Sound Browser" and the frame below it.  
+* Right click a row with a plus sign to open up the window with additional sounds, click the shaded area to close it again.  
+* Click the middle mouse button while hovering on a row to add/remove bookmark.  
+* You can scroll through the pages with the mousewheel while hovering in the results frame.  
+  
 # Installation
   
 If you have custom sounds, please follow the step below: [Preparing sound data](https://github.com/Fiurs-Hearth/SoundBrowser/edit/master/README.md#preparing-sound-data)  
