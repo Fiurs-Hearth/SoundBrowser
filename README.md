@@ -4,6 +4,18 @@
   
 A WotLK sound browsing addon  
   
+# Features  
+  
+Two filter options + an extra that works with the two filter options.  
+* Standard filter, search by ID, name, path, filename.  
+* Search by ID with same length as the input text, matching numbers and filling in blanks (x or .).
+* Extra filter option to include path while searching.
+
+Other features  
+* Stop music played by the addon.
+* Bookmark your favourite sounds.
+* Play up individual sounds tied to the same ID  
+  
 # Installation
   
 If you have custom sounds, please follow the step below: [Preparing sound data](https://github.com/Fiurs-Hearth/SoundBrowser/edit/master/README.md#preparing-sound-data)  
