@@ -5,7 +5,6 @@ A WotLK sound browsing addon
   
 If you have custom sounds, please follow the step below: [Preparing sound data](https://github.com/Fiurs-Hearth/SoundBrowser/edit/master/README.md#preparing-sound-data)  
   
-  
 ## Installing the addon  
 * [Download the addon](https://github.com/Fiurs-Hearth/WIIIUI/archive/refs/heads/master.zip)
 * Unpack the file
