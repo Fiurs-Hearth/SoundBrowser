@@ -1,0 +1,777 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\..\FrameXML\UI.xsd">
+
+	<Frame name="SB_toggleFrame" parent="UIParent" movable="true" hidden="false">
+		<Size x="45" y="45"/>
+		<Anchors>
+			<Anchor point="RIGHT">	
+				<Offset x="-10" y="0"/>
+			</Anchor>
+		</Anchors>
+		<Backdrop bgFile="Interface/Icons/INV_Misc_Ear_Human_01"/>
+
+		<Frames>
+			<Frame name="$parentHoverBorder" setAllPoints="true" hidden="true">
+				<Size x="45" y="45"/>
+				<Anchors>
+					<Anchor point="CENTER">
+						<Offset x="0" y="0"/>
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface/BUTTONS/UI-Quickslot-Depress"/>
+			</Frame>
+			<Frame name="$parentHoverGlow" setAllPoints="true" hidden="true">
+				<Size x="90" y="90"/>
+				<Anchors>
+					<Anchor point="CENTER">
+						<Offset x="0" y="0"/>
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface/BUTTONS/CheckButtonGlow"/>
+			</Frame>
+		</Frames>
+		
+		<Scripts>
+			<OnEnter>
+				SB_toggleFrameHoverBorder:Show()
+				SB_toggleFrameHoverGlow:Show()
+			</OnEnter>
+			<OnLeave>
+				SB_toggleFrameHoverGlow:Hide()
+				SB_toggleFrameHoverBorder:Hide()
+			</OnLeave>
+			<OnMouseDown>
+				if(arg1 == "RightButton")then
+					this:StartMoving();
+				end
+				this:SetBackdropColor(0.5,0.5,0.5,1)
+			</OnMouseDown>
+			<OnMouseUp>
+				this:StopMovingOrSizing();
+				this:SetBackdropColor(1,1,1,1)
+				if(arg1 == "RightButton")then
+					return
+				end
+				if(SB_mainFrame:IsVisible())then
+					SB_mainFrame:Hide()
+				else
+					SB_mainFrame:Show()
+				end
+			</OnMouseUp>
+		</Scripts>
+	</Frame>
+	
+	<Frame name="SB_mainFrame"  parent="UIParent" movable="true" hidden="true">
+		<Size x="200" y="298"/>
+		<Anchors>
+			<Anchor point="LEFT">	
+				<Offset x="200" y="0"/>
+			</Anchor>
+		</Anchors>
+		<Backdrop bgFile="Interface/Tooltips/UI-Tooltip-Background" edgeFile="Interface/DialogFrame/UI-DialogBox-Border" edgeSize="25">
+			<Color r="0" g="0" b="0" a="0.75" />
+			<BackgroundInsets>
+				<AbsInset left="10" right="10" top="10" bottom="10"/>
+			</BackgroundInsets>
+		</Backdrop>
+
+		<Frames>
+			<!-- Close button -->
+			<Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+				<Size x="30" y="30"/>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="-5" y="5"/>
+					</Anchor>
+				</Anchors>
+			</Button>
+
+			<!-- Top text -->
+			<Frame name="$parentFont">
+				<Size x="150" y="40"/>
+				<Anchors>
+					<Anchor point="TOP">	
+						<Offset x="0" y="10"/>
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface/CHARACTERFRAME/UI-Party-Background" edgeFile="Interface/DialogFrame/UI-DialogBox-Border">
+					<Color r="0" g="0" b="0" a="1" />
+					<EdgeSize>
+						<AbsValue val="25"/>
+					</EdgeSize>
+					<BackgroundInsets>
+						<AbsInset left="7" right="7" top="7" bottom="7"/>
+					</BackgroundInsets>
+				</Backdrop>
+
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parentTitleText" inherits="GameFontNormal" text="Sound Browser">
+							<Size>
+                        		<AbsDimension x="150" y="40"/>
+                    		</Size>
+							<Anchors>
+								<Anchor point="TOP" x="0" y="0" />
+							</Anchors>
+							
+						</FontString>
+					</Layer>
+				</Layers>
+
+				<Scripts>
+					<OnLoad>
+						SB_mainFrameFontTitleText:SetFont("Fonts\\FRIZQT__.TTF", 15, "")
+					</OnLoad>
+				</Scripts>
+			</Frame>
+
+			<!-- Search Editbox -->
+			<EditBox name="$parentSearchEditBox" autoFocus="false" frameStrata="HIGH" historyLines="32" text="Search...">
+                <Size>
+                    <AbsDimension x="160" y="35"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOP">
+                        <Offset>
+                            <AbsDimension x="0" y="-40"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+
+                <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+                          edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+                          tile="true">
+                    <EdgeSize>
+                        <AbsValue val="16"/>
+                    </EdgeSize>
+                    <TileSize>
+                        <AbsValue val="16"/>
+                    </TileSize>
+					<BackgroundInsets>
+						<AbsInset left="4" right="4" top="4" bottom="4"/>
+					</BackgroundInsets>
+                </Backdrop>
+
+                <Scripts>
+					<OnLoad>
+						this:SetFont("Fonts\\FRIZQT__.TTF", 14, "")
+						this:SetTextInsets(10, 10, 0, 0)
+					</OnLoad>
+                    <OnShow>
+                        this:ClearFocus();
+                    </OnShow>
+                    <OnEnterPressed>
+                        
+                    </OnEnterPressed>
+                    <OnEscapePressed>
+                        this:ClearFocus();
+                    </OnEscapePressed>
+					<OnTextChanged>
+						SB_textChanged(this:GetText())
+					</OnTextChanged>
+                </Scripts>
+                <FontString name="$parentFontString" inherits="ChatFontNormal" bytes="256" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent" x="20" y="0" />
+					</Anchors>
+				</FontString>
+            </EditBox>
+
+			<!-- Filter -->
+			<Frame name="$parentFilter">
+				<Size x="150" y="40"/>
+				<Anchors>
+					<Anchor point="TOPLEFT">	
+						<Offset x="0" y="10"/>
+					</Anchor>
+				</Anchors>
+
+				<!-- Filter text -->
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parentText" inherits="GameFontNormal" text="Filters">
+							<Size>
+                        		<AbsDimension x="0" y="40"/>
+                    		</Size>
+							<Anchors>
+								<Anchor point="TOP" x="0" y="0" />
+							</Anchors>
+							
+						</FontString>
+					</Layer>
+
+					<Layer level="ARTWORK">
+						<FontString name="$parentNoFilterText" inherits="GameFontNormal" text="|c00F0FFFFNo filter">
+							<Size>
+                        		<AbsDimension x="0" y="40"/>
+                    		</Size>
+							<Anchors>
+								<Anchor point="TOP" x="0" y="0" />
+							</Anchors>
+							
+						</FontString>
+					</Layer>
+
+					<Layer level="ARTWORK">
+						<FontString name="$parentLikeMaxCharText" inherits="GameFontNormal" text="|c00F0FFFFID Like length (xx12)">
+							<Size>
+                        		<AbsDimension x="0" y="40"/>
+                    		</Size>
+							<Anchors>
+								<Anchor point="TOP" x="0" y="0" />
+							</Anchors>
+							
+						</FontString>
+					</Layer>
+
+					<Layer level="ARTWORK">
+						<FontString name="$parentPathText" inherits="GameFontNormal" text="|c00FFFF00Include path">
+							<Size>
+                        		<AbsDimension x="0" y="40"/>
+                    		</Size>
+							<Anchors>
+								<Anchor point="TOP" x="-3" y="-174" />
+							</Anchors>
+							
+						</FontString>
+					</Layer>
+				</Layers>
+
+				<!-- Filter boxes -->
+				<Frames>
+
+					<!-- No filter -->
+					<CheckButton  name="$parentNoFilter" inherits="OptionsCheckButtonTemplate" checked="true">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="17" y="-115"></AbsDimension>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton >
+
+					<!-- LIKE and Max char filter -->
+					<CheckButton  name="$parentLikeMaxCharFilter" inherits="OptionsCheckButtonTemplate" checked="false">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="17" y="-150"></AbsDimension>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton >
+
+					<!-- Path Editbox -->
+					<EditBox name="$parentPathEditBox" autoFocus="false" frameStrata="HIGH" historyLines="32" text="Search...">
+						<Size>
+							<AbsDimension x="160" y="35"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="20" y="-205"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+
+						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+								edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+								tile="true">
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="16"/>
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="4" right="4" top="4" bottom="4"/>
+							</BackgroundInsets>
+						</Backdrop>
+
+						<Scripts>
+							<OnLoad>
+								this:SetFont("Fonts\\FRIZQT__.TTF", 14, "")
+								this:SetTextInsets(10, 10, 0, 0)
+							</OnLoad>
+							<OnShow>
+								this:ClearFocus();
+							</OnShow>
+							<OnEnterPressed>
+								
+							</OnEnterPressed>
+							<OnEscapePressed>
+								this:ClearFocus();
+							</OnEscapePressed>
+							<OnTextChanged>
+								SB_textChangedPath((this:GetText() or ""))
+								SB_textChanged((SB_mainFrameSearchEditBox:GetText() or "S"))
+							</OnTextChanged>
+						</Scripts>
+						<FontString name="$parentFontString" inherits="ChatFontNormal" bytes="256" justifyH="LEFT">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parent" x="20" y="0" />
+							</Anchors>
+						</FontString>
+					</EditBox>
+
+				</Frames>
+
+				<Scripts>
+					<OnLoad>
+						SB_mainFrameFilterText:SetFont("Fonts\\FRIZQT__.TTF", 15, "")
+						SB_mainFrameFilterText:SetPoint("TOPLEFT", 75, -81)
+						SB_mainFrameFilterText:SetJustifyH("LEFT")
+
+						SB_mainFrameFilterNoFilterText:SetFont("Fonts\\FRIZQT__.TTF", 14, "")
+						SB_mainFrameFilterNoFilterText:SetPoint("TOPLEFT", SB_mainFrameFilterNoFilter, 33, 5)
+						SB_mainFrameFilterNoFilterText:SetJustifyH("LEFT")
+
+						SB_mainFrameFilterLikeMaxCharText:SetFont("Fonts\\FRIZQT__.TTF", 13, "")
+						SB_mainFrameFilterLikeMaxCharText:SetPoint("TOPLEFT", SB_mainFrameFilterLikeMaxCharFilter, 33, 5)
+						SB_mainFrameFilterLikeMaxCharText:SetJustifyH("LEFT")
+
+						SB_mainFrameFilterPathText:SetFont("Fonts\\FRIZQT__.TTF", 14, "")
+
+					</OnLoad>
+				</Scripts>
+			</Frame>
+
+			<!-- Stop music -->
+			<Button name="$parentStopmusic">
+				<Size x="35" y="35"/>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset x="-25" y="30"/>
+					</Anchor>
+				</Anchors>
+
+				<Backdrop bgFile="Interface\BUTTONS/UI-GroupLoot-Pass-Up"/>
+				<Layers>		
+					<!-- Stop music text -->
+					<Layer level="ARTWORK">
+						<FontString name="$parentText" inherits="GameFontNormal" text="Stop music">
+							<Size>
+								<AbsDimension x="150" y="40"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" x="0" y="0" />
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+
+				<Scripts>
+					<OnLoad>
+						SB_mainFrameStopmusicText:SetFont("Fonts\\FRIZQT__.TTF", 15, "")
+						SB_mainFrameStopmusicText:SetPoint("TOPLEFT", -100, 3)
+						SB_mainFrameStopmusicText:SetJustifyH("LEFT")
+
+						SB_mainFrameStopmusic:SetBackdropColor(0.75, 0.5, 0.5, 1)	
+					</OnLoad>
+					<OnEnter>
+						SB_mainFrameStopmusic:SetBackdropColor(1, 0.5, 0.5, 1)	
+					</OnEnter>
+					<OnLeave>
+						SB_mainFrameStopmusic:SetBackdropColor(0.75, 0.5, 0.5, 1)	
+					</OnLeave>
+					<OnMouseDown>
+						SB_mainFrameStopmusic:SetBackdropColor(0.60, 0, 0, 1)
+						StopMusic()
+					</OnMouseDown>
+					<OnMouseUp>
+						SB_mainFrameStopmusic:SetBackdropColor(1, 0, 0, 1)	
+					</OnMouseUp>
+				</Scripts>
+			</Button>
+
+			<!-- Bookmarked frame -->
+			<Frame name="$parentBookmarked">
+				<Size x="300" y="231"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
+						<Offset x="-103" y="7"/>
+					</Anchor>
+				</Anchors>
+
+				<Backdrop bgFile="Interface/Tooltips/UI-Tooltip-Background"
+						edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+						tile="true">
+                    <EdgeSize>
+                        <AbsValue val="16"/>
+                    </EdgeSize>
+                    <TileSize>
+                        <AbsValue val="16"/>
+                    </TileSize>
+					<BackgroundInsets>
+						<AbsInset left="4" right="4" top="4" bottom="4"/>
+					</BackgroundInsets>>
+					<Color r="0" g="0" b="0" a="0.60" />
+				</Backdrop>
+
+				<!-- Clear bookmarks -->
+				<Frames>
+					<Frame>
+						<Size x="165" y="35"/>
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT">
+								<Offset x="0" y="-31"/>
+							</Anchor>
+						</Anchors>
+
+						<Backdrop bgFile="Interface/CHARACTERFRAME/UI-Party-Background"
+								edgeFile="Interface/DialogFrame/UI-DialogBox-Border" 
+								tile="true">
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="16"/>
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="4" right="4" top="4" bottom="4"/>
+							</BackgroundInsets>>
+							<Color r="0" g="0" b="0" a="1" />
+						</Backdrop>
+
+						<Layers>
+							<Layer level="ARTWORK">
+								<FontString name="clearBookmarksText" inherits="GameFontNormal" text="Clear bookmarks">
+									<Size>
+										<AbsDimension x="0" y="40"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" x="0" y="0" />
+									</Anchors>
+									
+								</FontString>
+							</Layer>
+						</Layers>
+
+
+						<Frames>
+							<Button name="clearBookmarks">
+								<Size x="35" y="35"/>
+								<Anchors>
+									<Anchor point="RIGHT">
+										<Offset x="-3" y="-1"/>
+									</Anchor>
+								</Anchors>
+
+								<Backdrop bgFile="Interface\BUTTONS/CancelButton-Up">
+
+								</Backdrop>
+								<Scripts>
+									<OnLoad>
+										this:SetBackdropColor(0.85,0.85,0.85, 1)
+									</OnLoad>
+									<OnEnter>
+										this:SetBackdropColor(1,1,1, 1)
+									</OnEnter>
+									<OnLeave>
+										this:SetBackdropColor(0.85,0.85,0.85, 1)
+									</OnLeave>
+									<OnMouseDown>
+										this:SetBackdropColor(0.70,0.70,0.70, 1)
+										SB_bookmarkedSounds = {}
+        								SetupBookmarks()
+									</OnMouseDown>
+									<OnMouseUp>
+										this:SetBackdropColor(1,1,1, 1)
+									</OnMouseUp>
+								</Scripts>
+							</Button>
+						</Frames>
+
+						<Scripts>
+							<OnLoad>
+								clearBookmarksText:SetFont("Fonts\\FRIZQT__.TTF", 12, "")
+								clearBookmarksText:SetPoint("LEFT", 10, 0)
+								clearBookmarksText:SetJustifyH("LEFT")
+							</OnLoad>
+						</Scripts>
+					</Frame>
+				</Frames>
+
+			</Frame>
+
+			<!-- Results frame -->
+			<Frame name="$parentResults">
+				<Size x="800" y="517"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPRIGHT">
+						<Offset x="-6" y="-5"/>
+					</Anchor>
+				</Anchors>
+
+				<Backdrop bgFile="Interface/Tooltips/UI-Tooltip-Background"
+						edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+						tile="true">
+                    <EdgeSize>
+                        <AbsValue val="16"/>
+                    </EdgeSize>
+                    <TileSize>
+                        <AbsValue val="16"/>
+                    </TileSize>
+					<BackgroundInsets>
+						<AbsInset left="4" right="4" top="4" bottom="4"/>
+					</BackgroundInsets>>
+					<Color r="0" g="0" b="0" a="0.60" />
+				</Backdrop>
+
+				<Frames>
+
+					<!-- Legend frame -->
+					<Frame name="$parentLegend">
+
+						<Size x="222" y="60"/>
+						<Anchors>
+							<Anchor point="TOPLEFT">	
+								<Offset x="0" y="55"/>
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface/Tooltips/UI-Tooltip-Background"
+							edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+							tile="true">
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="16"/>
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="4" right="4" top="4" bottom="4"/>
+							</BackgroundInsets>>
+							<Color r="0" g="0" b="0" a="0.60" />
+						</Backdrop>
+
+						<Layers>
+						
+							<!-- Legend text -->
+							<Layer level="ARTWORK">
+								<FontString name="$parentText" inherits="GameFontNormal" text="Legend">
+									<Size>
+										<AbsDimension x="150" y="40"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" x="0" y="0" />
+									</Anchors>
+								</FontString>
+							</Layer>
+
+							<!-- ID -->
+							<Layer level="ARTWORK">
+								<FontString name="$parentID" inherits="GameFontNormal" text="|c00FF9922 ID">
+									<Size>
+										<AbsDimension x="150" y="40"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" x="0" y="0" />
+									</Anchors>
+								</FontString>
+							</Layer>
+
+							<!-- Name -->
+							<Layer level="ARTWORK">
+								<FontString name="$parentName" inherits="GameFontNormal" text="|c00FFFF00 Name">
+									<Size>
+										<AbsDimension x="150" y="40"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" x="0" y="0" />
+									</Anchors>
+								</FontString>
+							</Layer>
+
+							<!-- Filepath -->
+							<Layer level="ARTWORK">
+								<FontString name="$parentFilepath" inherits="GameFontNormal" text="|c0033EE88 Filepath">
+									<Size>
+										<AbsDimension x="150" y="40"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" x="0" y="0" />
+									</Anchors>
+								</FontString>
+							</Layer>
+
+							<!-- Filepath -->
+							<Layer level="ARTWORK">
+								<FontString name="$parentFilename" inherits="GameFontNormal" text="|c0066BBDD Filename">
+									<Size>
+										<AbsDimension x="150" y="40"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" x="0" y="0" />
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+
+						<Scripts>
+							<OnLoad>
+								SB_mainFrameResultsLegendText:SetFont("Fonts\\FRIZQT__.TTF", 16, "")
+								SB_mainFrameResultsLegendText:SetPoint("TOPLEFT", 9, 3)
+								SB_mainFrameResultsLegendText:SetJustifyH("LEFT")
+
+								SB_mainFrameResultsLegendID:SetFont("Fonts\\FRIZQT__.TTF", 15, "")
+								SB_mainFrameResultsLegendID:SetPoint("TOPLEFT", 6, -18)
+								SB_mainFrameResultsLegendID:SetJustifyH("LEFT")
+
+								SB_mainFrameResultsLegendName:SetFont("Fonts\\FRIZQT__.TTF", 15, "")
+								SB_mainFrameResultsLegendName:SetPoint("TOPLEFT", 30, -18)
+								SB_mainFrameResultsLegendName:SetJustifyH("LEFT")
+
+								SB_mainFrameResultsLegendFilepath:SetFont("Fonts\\FRIZQT__.TTF", 15, "")
+								SB_mainFrameResultsLegendFilepath:SetPoint("TOPLEFT", 80, -18)
+								SB_mainFrameResultsLegendFilepath:SetJustifyH("LEFT")
+
+								SB_mainFrameResultsLegendFilename:SetFont("Fonts\\FRIZQT__.TTF", 15, "")
+								SB_mainFrameResultsLegendFilename:SetPoint("TOPLEFT", 143, -18)
+								SB_mainFrameResultsLegendFilename:SetJustifyH("LEFT")
+								
+							</OnLoad>
+						</Scripts>
+
+					</Frame>
+
+
+					<!-- Status frame -->
+					<Frame name="$parentStatus">
+
+
+						<Size x="300" y="80"/>
+						<Anchors>
+							<Anchor point="TOPLEFT">	
+								<Offset x="218" y="75"/>
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface/Tooltips/UI-Tooltip-Background"
+							edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+							tile="true">
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="16"/>
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="4" right="4" top="4" bottom="4"/>
+							</BackgroundInsets>>
+							<Color r="0" g="0" b="0" a="0.60" />
+						</Backdrop>
+
+						<Layers>
+							<Layer level="ARTWORK">
+								<FontString name="$parentTextStatus" inherits="GameFontNormal" text="Waiting...">
+									<Size>
+										<AbsDimension x="215" y="70"/>
+									</Size>
+									<Anchors>
+										<Anchor point="CENTER" x="0" y="0" />
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+
+						<Scripts>
+							<OnLoad>
+								SB_mainFrameResultsStatusTextStatus:SetFont("Fonts\\FRIZQT__.TTF", 13, "")
+								SB_mainFrameResultsStatusTextStatus:SetPoint("CENTER", 0, 0)
+								SB_mainFrameResultsStatusTextStatus:SetJustifyH("CENTER")
+							</OnLoad>
+						</Scripts>
+
+					</Frame>
+
+					<!-- Pages -->
+					<!-- Current page text -->
+					<Frame name="$parentFontPage">
+						<Size x="150" y="40"/>
+						<Anchors>
+							<Anchor point="BOTTOM">	
+								<Offset x="0" y="-30"/>
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface/CHARACTERFRAME/UI-Party-Background" edgeFile="Interface/DialogFrame/UI-DialogBox-Border">
+							<Color r="0" g="0" b="0" a="1" />
+							<EdgeSize>
+								<AbsValue val="25"/>
+							</EdgeSize>
+							<BackgroundInsets>
+								<AbsInset left="7" right="7" top="7" bottom="7"/>
+							</BackgroundInsets>
+						</Backdrop>
+
+						<Layers>
+							<Layer level="ARTWORK">
+								<FontString name="$parentTextCurrentPage" inherits="GameFontNormal" text="1">
+									<Size>
+										<AbsDimension x="150" y="40"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" x="0" y="0" />
+									</Anchors>
+								</FontString>
+							</Layer>
+
+							<Layer level="ARTWORK">
+								<FontString name="$parentDivider" inherits="GameFontNormal" text="/">
+									<Size>
+										<AbsDimension x="150" y="40"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" x="0" y="0" />
+									</Anchors>
+								</FontString>
+							</Layer>
+
+							<Layer level="ARTWORK">
+								<FontString name="$parentTextMaxPage" inherits="GameFontNormal" text="1">
+									<Size>
+										<AbsDimension x="150" y="40"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" x="0" y="0" />
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+
+						<Scripts>
+							<OnLoad>
+								SB_mainFrameResultsFontPageTextCurrentPage:SetFont("Fonts\\FRIZQT__.TTF", 15, "")
+								SB_mainFrameResultsFontPageTextCurrentPage:SetPoint("RIGHT", -85, 0)
+								SB_mainFrameResultsFontPageTextCurrentPage:SetJustifyH("RIGHT")
+
+								SB_mainFrameResultsFontPageTextMaxPage:SetFont("Fonts\\FRIZQT__.TTF", 15, "")
+								SB_mainFrameResultsFontPageTextMaxPage:SetPoint("LEFT", 80, 0)
+								SB_mainFrameResultsFontPageTextMaxPage:SetJustifyH("LEFT")
+
+								SB_mainFrameResultsFontPageDivider:SetFont("Fonts\\FRIZQT__.TTF", 18, "")
+								SB_mainFrameResultsFontPageDivider:SetPoint("TOP", 0, 1)
+								
+								SetPageVariables()
+							</OnLoad>
+						</Scripts>
+					</Frame>
+					<!-- create pages -->
+				</Frames>
+			</Frame>
+			
+		</Frames>
+
+		<Scripts>
+			<OnLoad>
+				
+			</OnLoad>
+			<OnMouseDown>
+				this:StartMoving();	
+			</OnMouseDown>
+			<OnMouseUp>
+				this:StopMovingOrSizing();
+			</OnMouseUp>
+		</Scripts>
+	</Frame>
+
+</Ui>

@@ -1,0 +1,9 @@
+## Interface: 33500
+## Title: SoundBrowser
+## Author: Fiur#8658
+## LoadManagers: AddonLoader
+## SavedVariables: SB_bookmarkedSounds
+
+SoundEntries.lua
+SoundBrowser.lua
+SoundBrowser.xml
